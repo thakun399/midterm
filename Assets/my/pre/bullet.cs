@@ -4,7 +4,7 @@ public class bullet : MonoBehaviour
 {
 
     public float damage = 100f; // ดาเมจของกระสุน
-    public float lifeTime = 5f; // กระสุนจะหายไปหลังจาก 5 วินาที
+    public float lifeTime = 3f; // กระสุนจะหายไปหลังจาก 5 วินาที
 
     void Start()
     {
