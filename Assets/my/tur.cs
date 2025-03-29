@@ -1,14 +1,20 @@
-using UnityEngine;
-
+using UnityEngine ;
+using System.Collections;
 public class tur : MonoBehaviour
 {
+    public GameObject muzzleFlashPrefab; // เอฟเฟกต์แสงตอนยิง
+    public Light muzzleLight;
+    public GameObject muzzleFlash; // สร้างตัวแปรเก็บแสงแฟลช
     public Transform turret;
     public Transform firePoint;
     public GameObject bulletPrefab;
     public float bulletSpeed = 20f;
     public float turretRotationSpeed = 80f;
-    public float fireRate = 2f; // ค่าคูลดาวน์ 2 วินาที
+    public float fireRate = 2f; // คูลดาวน์ 2 วินาที
     private float nextFireTime = 0f;
+
+    public AudioSource audioSource; // ตัวเล่นเสียง
+    public AudioClip shootClip; // ไฟล์เสียงตอนยิง
 
     void Update()
     {
@@ -23,11 +29,38 @@ public class tur : MonoBehaviour
             nextFireTime = Time.time + fireRate;
         }
     }
-
+    
     void Shoot()
     {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.velocity = firePoint.forward * bulletSpeed;
+        if (muzzleFlashPrefab != null)
+        {
+            GameObject flash = Instantiate(muzzleFlashPrefab, firePoint.position, firePoint.rotation);
+            Destroy(flash, 0.1f); // ลบ effect หลังแสดง 0.1 วินาที
+        }
+
+        // เล่นเสียงยิง
+        if (audioSource != null && shootClip != null)
+        {
+            audioSource.PlayOneShot(shootClip);
+        }
+        StartCoroutine(FlashLightEffect());
     }
+
+    
+
+    IEnumerator FlashLightEffect()
+    {
+        muzzleLight.enabled = true;
+        yield return new WaitForSeconds(0.1f);
+        muzzleLight.enabled = false;
+    }
+    
+    
+    
+    
+    
+    
 }

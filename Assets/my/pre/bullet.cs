@@ -3,6 +3,7 @@ using UnityEngine;
 public class bullet : MonoBehaviour
 {
 
+    public ParticleSystem explosionParticle;
     public float damage = 100f; // ดาเมจของกระสุน
     public float lifeTime = 3f; // กระสุนจะหายไปหลังจาก 5 วินาที
 
@@ -21,6 +22,8 @@ public class bullet : MonoBehaviour
             {
                 building.TakeDamage(damage); // ลดเลือดตึก
             }
+
+            Instantiate(explosionParticle, gameObject.transform.position, Quaternion.identity);
             Destroy(gameObject); // ทำลายกระสุนเมื่อชนตึก
         }
     }
